@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@SequenceGenerator(
-        name="MEMBER_SEQ_GENERATOR",
-        sequenceName = "MEMBER_SEQ", //매핑할 데이터베이스 시퀀스 이름
-        initialValue = 1,
-        allocationSize = 50)
+//@SequenceGenerator(
+//        name="MEMBER_SEQ_GENERATOR",
+//        sequenceName = "MEMBER_SEQ", //매핑할 데이터베이스 시퀀스 이름
+//        initialValue = 1,
+//        allocationSize = 50)
 //@TableGenerator(
 //        name="MEMBER_TABLE_GENERATOR",
 //        table="MY_SEQUENCES",
@@ -18,7 +18,7 @@ import java.util.Date;
 public class Member {
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
 //    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEMBER_TABLE_GENERATOR")
     private Long id;
 
