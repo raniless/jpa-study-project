@@ -28,8 +28,10 @@ public class JpaMain {
             em.clear();
 
             Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+            //양방향 연관관계
+            for(Member m : findMember.getTeam().getMembers()) {
+                System.out.println("m = " + m.getUserName());
+            }
 
             tx.commit();
         } catch (Exception e) {
