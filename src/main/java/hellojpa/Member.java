@@ -15,7 +15,7 @@ import java.util.Date;
 //        pkColumnName = "MEMBER_SEQ",
 //        pkColumnValue = "MEMBER_SEQ",
 //        allocationSize = 1)
-public class Member {
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
