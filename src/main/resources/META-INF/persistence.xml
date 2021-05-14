@@ -5,6 +5,10 @@
     <persistence-unit name="hello">
         <class>hellojpa.Member</class>
         <class>hellojpa.Team</class>
+        <class>extendsmapping.Album</class>
+        <class>extendsmapping.Book</class>
+        <class>extendsmapping.Item</class>
+        <class>extendsmapping.Movie</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <!-- 필수 속성 -->
