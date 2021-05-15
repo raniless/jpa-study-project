@@ -51,6 +51,9 @@
         <class>jpabook.jpashop.domain.Locker</class>
         <class>jpabook.jpashop.domain.Category</class>
         <class>jpabook.jpashop.domain.Delivery</class>
+        <class>jpabook.jpashop.domain.Album</class>
+        <class>jpabook.jpashop.domain.Book</class>
+        <class>jpabook.jpashop.domain.Movie</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <!-- 필수 속성 -->
