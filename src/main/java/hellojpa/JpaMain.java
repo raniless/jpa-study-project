@@ -20,8 +20,10 @@ public class JpaMain {
             //8-2 즉시 로딩과 지연 로딩
             //lazyAndEagerLoadingMethod();
             //8-3 영속성전이(CASCADE)
-            cascadeAndOrphanMethod();
+            //cascadeAndOrphanMethod();
 
+            //9-2 임베디드 타입
+            embeddedMethod();
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -31,7 +33,6 @@ public class JpaMain {
 
         emf.close();
     }
-
 
     private static void proxyMethod() {
         Member member1 = new Member();
@@ -114,5 +115,13 @@ public class JpaMain {
         //고아객체
         Parent findParent = em.find(Parent.class, parent.getId());
         findParent.getChildList().remove(0);    //부모엔티티와 연관관계가 끊어짐 -> DELETE문 수행
+    }
+
+    private static void embeddedMethod() {
+        Member2 member = new Member2();
+        member.setUserName("Hyoks");
+        member.setHomeAddress(new Address("city", "street", "zipcode"));
+        member.setPeriod(new Period());
+        em.persist(member);
     }
 }
