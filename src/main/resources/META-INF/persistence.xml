@@ -5,6 +5,8 @@
     <persistence-unit name="hello">
         <class>hellojpa.Member</class>
         <class>hellojpa.Team</class>
+        <class>hellojpa.Parent</class>
+        <class>hellojpa.Child</class>
         <class>extendsmapping.Album</class>
         <class>extendsmapping.Book</class>
         <class>extendsmapping.Item</class>
