@@ -23,7 +23,10 @@ public class JpaMain {
             //cascadeAndOrphanMethod();
 
             //9-2 임베디드 타입
-            embeddedMethod();
+            //embeddedMethod();
+            //9-3 값 타입과 불변 객체
+            valueTypeAndImmutableMethod();
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -123,5 +126,22 @@ public class JpaMain {
         member.setHomeAddress(new Address("city", "street", "zipcode"));
         member.setPeriod(new Period());
         em.persist(member);
+    }
+
+    private static void valueTypeAndImmutableMethod() {
+        Address address = new Address("city", "street", "10000");
+
+        Member2 member = new Member2();
+        member.setUserName("member1");
+        member.setHomeAddress(address);
+        em.persist(member);
+
+        Member2 member2 = new Member2();
+        member2.setUserName("member2");
+        member2.setHomeAddress(address);
+        em.persist(member2);
+
+        //임베디드 값 타입 공유 시 Side Effect 발생 -> 복사해서 사용해야 함
+        member.getHomeAddress().setCity("newCity");
     }
 }
