@@ -25,8 +25,9 @@ public class JpaMain {
             //9-2 임베디드 타입
             //embeddedMethod();
             //9-3 값 타입과 불변 객체
-            valueTypeAndImmutableMethod();
-
+            //valueTypeAndImmutableMethod();
+            //9-5 값 타입 컬렉션
+            valueTypeCollectionMethod();
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -143,5 +144,37 @@ public class JpaMain {
 
         //임베디드 값 타입 공유 시 Side Effect 발생 -> 복사해서 사용해야 함
         member.getHomeAddress().setCity("newCity");
+    }
+
+    private static void valueTypeCollectionMethod() {
+        Member member = new Member();
+        member.setUserName("member1");
+        member.setHomeAddress(new Address("homeCity", "street", "10000"));
+        
+        member.getFavoriteFoods().add("치킨");
+        member.getFavoriteFoods().add("족발");
+        member.getFavoriteFoods().add("피자");
+
+        member.getAddressHistory().add(new AddressEntity("old1", "streeet", "10000"));
+        member.getAddressHistory().add(new AddressEntity("old2", "streeet", "10000"));
+
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        System.out.println("=============== START ==============");
+        Member findMember = em.find(Member.class, member.getId());
+
+        //homeCity -> newCity
+        Address a = findMember.getHomeAddress();
+        findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+
+        //치킨 -> 한식
+        findMember.getFavoriteFoods().remove("치킨");
+        findMember.getFavoriteFoods().add("한식");
+
+        findMember.getAddressHistory().remove(new AddressEntity("old1", "streeet", "10000"));
+        findMember.getAddressHistory().add(new AddressEntity("newCity1", "streeet", "10000"));
     }
 }
