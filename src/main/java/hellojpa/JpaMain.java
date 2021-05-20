@@ -3,6 +3,10 @@ package hellojpa;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class JpaMain {
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
@@ -13,8 +17,6 @@ public class JpaMain {
         tx.begin();
 
         try {
-
-            /* Chapter 8 */
             //8-1 프록시
             //proxyMethod(puu, em);
             //8-2 즉시 로딩과 지연 로딩
@@ -27,7 +29,10 @@ public class JpaMain {
             //9-3 값 타입과 불변 객체
             //valueTypeAndImmutableMethod();
             //9-5 값 타입 컬렉션
-            valueTypeCollectionMethod();
+            //valueTypeCollectionMethod();
+
+            //10-1 객체지향쿼리 소개
+            objectOrientedQueryMethod();
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -176,5 +181,25 @@ public class JpaMain {
 
         findMember.getAddressHistory().remove(new AddressEntity("old1", "streeet", "10000"));
         findMember.getAddressHistory().add(new AddressEntity("newCity1", "streeet", "10000"));
+    }
+
+    private static void objectOrientedQueryMethod() {
+        //JPQL
+        String jpql = "select m From Member m where m.username like '%hello%'";
+        List<Member> result = em.createQuery(jpql, Member.class)
+                .getResultList();
+
+        for(Member member : result) {
+            System.out.println(member);
+        }
+
+        //Criteria
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Member> query = cb.createQuery(Member.class);
+
+        Root<Member> m = query.from(Member.class);
+
+        CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+        List<Member> resultList = em.createQuery(cq).getResultList();
     }
 }
