@@ -29,8 +29,10 @@ public class JpqlMain {
             //expressionMethod();
 
             //조건식
-            conditionalMethod();
-            
+            //conditionalMethod();
+
+            //JPQL 함수
+            jpqlFunctionMethod();
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -188,6 +190,46 @@ public class JpqlMain {
 
         for (String s : result2) {
             System.out.println("s = " + s);
+        }
+    }
+
+    private static void jpqlFunctionMethod() {
+        Team team = new Team();
+        team.setName("teamA");
+        em.persist(team);
+
+        Member member = new Member();
+        member.setUsername("관리자");
+        member.setAge(10);
+        member.setType(MemberType.ADMIN);
+        member.setTeam(team);
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+//        String concatQuery = "select 'a' || 'b' From Member m";
+        String concatQuery = "select concat('a', 'b') From Member m";
+        List<String> concatResult = em.createQuery(concatQuery, String.class)
+                                .getResultList();
+
+        for (String s : concatResult) {
+            System.out.println("s = " + s);
+        }
+
+        String locateQuery = "select locate('de', 'abcdef') From Member m";
+        List<Integer> locateResult = em.createQuery(locateQuery, Integer.class)
+                .getResultList();
+        for (Integer s : locateResult) {
+            System.out.println("s = " + s);
+        }
+
+        //제대로 안된다?? 확인 필요
+        String sizeQuery = "select size(t.members) From Team t";
+        List<Integer> sizeResult = em.createQuery(sizeQuery, Integer.class)
+                                    .getResultList();
+        for (Integer integer : sizeResult) {
+            System.out.println("integer = " + integer);
         }
     }
 }
