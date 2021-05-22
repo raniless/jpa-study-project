@@ -26,7 +26,10 @@ public class JpqlMain {
             //joinMethod();
 
             //JPQL 타입 표현식과 기타식
-            expressionMethod();
+            //expressionMethod();
+
+            //조건식
+            conditionalMethod();
             
             tx.commit();
         } catch (Exception e) {
@@ -139,6 +142,52 @@ public class JpqlMain {
             System.out.println("objects = " + objects[0]);
             System.out.println("objects = " + objects[1]);
             System.out.println("objects = " + objects[2]);
+        }
+    }
+
+    private static void conditionalMethod() {
+        Team team = new Team();
+        team.setName("teamA");
+        em.persist(team);
+
+        Member member = new Member();
+        member.setUsername("관리자");
+        member.setAge(10);
+        member.setType(MemberType.ADMIN);
+        member.setTeam(team);
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        //CASE(기본 CASE 식)
+        String query = "select case when m.age <= 10 then '학생요금' "
+                     + "            when m.age >= 60 then '경로요금' "
+                     + "            else '일반요금' end "
+                     + "  from Member m";
+        List<String> result = em.createQuery(query, String.class)
+                                .getResultList();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+
+        //COALESCE
+        String query1 = "select coalesce(m.username, '이름 없는 회원') from Member m";
+        List<String> result1 = em.createQuery(query1, String.class)
+                                .getResultList();
+
+        for (String s : result1) {
+            System.out.println("s = " + s);
+        }
+
+        //NULLIF
+        String query2 = "select nullif(m.username, '관리자') from Member m";
+        List<String> result2 = em.createQuery(query2, String.class)
+                .getResultList();
+
+        for (String s : result2) {
+            System.out.println("s = " + s);
         }
     }
 }
