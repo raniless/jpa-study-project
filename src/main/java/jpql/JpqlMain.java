@@ -23,7 +23,11 @@ public class JpqlMain {
             //pagingMethod();
 
             //조인
-            joinMethod();
+            //joinMethod();
+
+            //JPQL 타입 표현식과 기타식
+            expressionMethod();
+            
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -107,6 +111,34 @@ public class JpqlMain {
         System.out.println("result.size = " + result.size());
         for (Member member1 : result) {
             System.out.println("member1 = " + member1);
+        }
+    }
+
+    private static void expressionMethod() {
+        Team team = new Team();
+        team.setName("teamA");
+        em.persist(team);
+
+        Member member = new Member();
+        member.setUsername("member1");
+        member.setAge(10);
+        member.setType(MemberType.ADMIN);
+        member.setTeam(team);
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        //ENUM을 조건절에 사용할 경우 package명 포함 해서 사용
+        String query = "select m.username, 'HELLO', true From Member m"
+                     + " where m.type = jpql.MemberType.USER";
+        List<Object[]> result = em.createQuery(query)
+                                    .getResultList();
+
+        for (Object[] objects : result) {
+            System.out.println("objects = " + objects[0]);
+            System.out.println("objects = " + objects[1]);
+            System.out.println("objects = " + objects[2]);
         }
     }
 }
